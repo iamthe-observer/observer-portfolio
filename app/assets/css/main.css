@@ -11,11 +11,13 @@
 	-webkit-tap-highlight-color: transparent;
 }
 
+/* Custom cursor disabled — uncomment to reactivate
 @media (pointer: fine) {
 	* {
 		cursor: none !important;
 	}
 }
+*/
 
 .custom-cursor-dot {
 	position: fixed;
@@ -698,6 +700,21 @@ html {
 	font-family: "Inter", sans-serif;
 }
 
+.about-footer-left {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex: 1;
+}
+
+.about-description {
+	font-size: 0.7rem;
+	line-height: 1.6;
+	color: rgba(255, 255, 255, 0.55);
+	max-width: 400px;
+	font-weight: 400;
+}
+
 .about-name {
 	border: 1px solid rgba(255, 255, 255, 0.4);
 	border-radius: 8px;
@@ -715,6 +732,7 @@ html {
 	font-weight: 500;
 	letter-spacing: 2px;
 	color: #aaa;
+	margin-bottom: 40px;
 	text-transform: uppercase;
 }
 
@@ -791,35 +809,218 @@ html {
 }
 
 
+/* ===== MOBILE RESPONSIVE ===== */
 @media (max-width: 768px) {
-	/* Overall Card Sizing */
+	/* Hide custom cursor on touch devices */
+	.custom-cursor-dot,
+	.custom-cursor-outline {
+		display: none !important;
+	}
+
+	/* Base card: fill width, auto height */
 	.content-card {
-		padding: 20px 20px;
+		width: 95%;
+		max-width: none;
+		height: auto;
+		min-height: 280px;
+		padding: 18px 18px;
 	}
 
-	.page-container.work-state .content-card {
-		height: 600px;
-		max-height: calc(100vh - 40px);
-		padding-left: 15px;
-		padding-right: 15px;
+	/* Card header: shrink nav gap, smaller logo */
+	.card-header {
+		grid-template-columns: auto auto auto;
+		gap: 8px;
 	}
 
-	.page-container.work-state .card-header {
-		padding-left: 15px;
-		padding-right: 15px;
+	.logo {
+		font-size: 1.2rem;
+	}
+
+	.nav-links {
+		gap: 12px;
+	}
+
+	.nav-link {
+		font-size: 0.5rem;
+		letter-spacing: 1px;
+	}
+
+	.contact-btn {
+		font-size: 0.5rem;
+		padding: 4px 8px;
+	}
+
+	/* Home state */
+	.home-content {
+		margin-top: 30px;
+		margin-bottom: 5px;
 	}
 
 	.main-heading {
-		font-size: 1.8rem;
+		font-size: 1.5rem;
+		margin-bottom: 10px;
 	}
 
-	/* Carousel Card sizing for smaller screens */
-	.work-card-figure {
-		width: 280px;
-		height: 180px;
+	.description {
+		font-size: 0.75rem;
+		max-width: 100%;
+		margin-bottom: 15px;
 	}
-	
+
+	/* Work state card */
+	.page-container.work-state .content-card {
+		width: 95%;
+		max-width: none;
+		height: auto;
+		min-height: auto;
+		max-height: calc(100vh - 30px);
+		padding: 15px;
+		padding-bottom: 15px;
+		transform: translateY(calc(50vh - 50% - 15px)) rotateY(0deg);
+	}
+
+	.page-container.work-state .card-header {
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+
+	/* Work info panel: hide verbose columns on mobile, only show title */
+	.work-info-panel {
+		gap: 8px !important;
+	}
+
+	.work-info-panel .md\:col-span-3,
+	.work-info-panel .md\:col-span-2 {
+		display: none;
+	}
+
+	.work-info-panel h2 {
+		font-size: 1.3rem !important;
+	}
+
 	.work-content {
-		gap: 16px;
+		gap: 12px;
+		margin-top: 10px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	/* Carousel cards */
+	.work-card-figure {
+		width: 240px;
+		height: 150px;
+	}
+
+	.work-card-3d {
+		transform: scale(0.95);
+	}
+
+	/* Drag hint */
+	.floating-drag-hint {
+		right: 10px;
+		background: rgba(20, 20, 20, 0.6);
+		width: 30px;
+		height: 30px;
+	}
+
+	/* About state */
+	.page-container.about-state .content-card {
+		width: 95%;
+		max-width: none;
+		height: 85vh;
+		border-radius: 12px;
+	}
+
+	.giant-text {
+		font-size: 18vw;
+	}
+
+	.about-footer {
+		padding: 12px 15px;
+		flex-direction: column;
+		gap: 10px;
+		align-items: flex-start;
+	}
+
+	.about-footer-left {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 8px;
+	}
+
+	.about-description {
+		font-size: 0.65rem;
+		max-width: 100%;
+	}
+
+	.about-name {
+		font-size: 0.6rem;
+	}
+
+	.about-location {
+		font-size: 0.55rem;
+	}
+
+	.close-about-btn {
+		/* Sit inside the card at top-right on mobile */
+		position: fixed;
+		top: auto;
+		bottom: 30px;
+		right: 50%;
+		transform: translateX(50%);
+		width: 40px;
+		height: 40px;
+		font-size: 1.2rem;
+		border-radius: 50%;
+		z-index: 100;
+		background: rgba(255, 255, 255, 0.15);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		backdrop-filter: blur(10px);
+	}
+
+	/* Contact state */
+	.content-card.is-contact {
+		height: 380px !important;
+	}
+
+	.card-back-content {
+		padding: 18px 18px;
+	}
+
+	.contact-close-btn {
+		left: 10px;
+		top: 10px;
+		transform: rotateY(180deg);
+		width: 32px;
+		height: 32px;
+		font-size: 1.2rem;
+	}
+}
+
+/* Extra-small phones (iPhone SE, etc.) */
+@media (max-width: 380px) {
+	.content-card {
+		padding: 14px 14px;
+	}
+
+	.main-heading {
+		font-size: 1.25rem;
+	}
+
+	.logo {
+		font-size: 1rem;
+	}
+
+	.nav-links {
+		gap: 8px;
+	}
+
+	.work-card-figure {
+		width: 200px;
+		height: 130px;
+	}
+
+	.giant-text {
+		font-size: 22vw;
 	}
 }

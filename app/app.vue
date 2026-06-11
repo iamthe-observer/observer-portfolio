@@ -7,8 +7,8 @@
 			'has-perspective': hasPerspective,
 		}"
 	>
-		<!-- Custom Cursor -->
-		<div
+		<!-- Custom Cursor (deactivated — will be reactivated later) -->
+		<!-- <div
 			v-if="isDesktop"
 			class="custom-cursor-dot"
 			ref="cursorDot"
@@ -19,7 +19,7 @@
 			class="custom-cursor-outline"
 			ref="cursorOutline"
 			:class="{ hovering: isHovering && !isOnLogo, 'on-logo': isOnLogo }"
-		></div>
+		></div> -->
 
 		<Transition name="bg-fade">
 			<div
@@ -113,10 +113,10 @@
 				<div class="card-body">
 					<!-- Home State Content -->
 					<div class="home-content" v-show="!isWorkState && !isAboutState">
-						<h1 class="main-heading">Branding, digital design<br />& development</h1>
+						<h1 class="main-heading">Branding, digital design<br class="hidden md:block" />& development</h1>
 						<p class="description">
-							For small to medium businesses, startups,<br />
-							and fellow professionals striving for growth<br />
+							For small to medium businesses, startups,
+							and fellow professionals striving for growth
 							and new opportunities
 						</p>
 						<div class="action-buttons">
@@ -129,7 +129,7 @@
 						<!-- Dynamic Info Panel above the carousel -->
 						<Transition name="fade" mode="out-in">
 							<div
-								class="work-info-panel w-full grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6 text-left pt-0 pb-0 px-2"
+								class="work-info-panel w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 text-left pt-0 pb-0 px-2"
 								:key="activeClientIndex"
 							>
 								<!-- Col 1: Title & Year (Span 4) -->
@@ -149,7 +149,7 @@
 								<!-- Col 2: Challenge (Span 3) -->
 								<div class="md:col-span-3 flex flex-col pt-1">
 									<h3
-										class="text-[0.75rem] text-white/40 mb-4 font-normal tracking-wide"
+										class="text-[0.75rem] text-white/40 mb-2 md:mb-4 font-normal tracking-wide"
 									>
 										Challenge:
 									</h3>
@@ -161,7 +161,7 @@
 								<!-- Col 3: Services (Span 2) -->
 								<div class="md:col-span-2 flex flex-col pt-1">
 									<h3
-										class="text-[0.75rem] text-white/40 mb-4 font-normal tracking-wide"
+										class="text-[0.75rem] text-white/40 mb-2 md:mb-4 font-normal tracking-wide"
 									>
 										Services:
 									</h3>
@@ -178,7 +178,7 @@
 								<!-- Col 4: Role (Span 3) -->
 								<div class="md:col-span-3 flex flex-col pt-1">
 									<h3
-										class="text-[0.75rem] text-white/40 mb-4 font-normal tracking-wide"
+										class="text-[0.75rem] text-white/40 mb-2 md:mb-4 font-normal tracking-wide"
 									>
 										Role:
 									</h3>
@@ -236,11 +236,18 @@
 					<div class="about-content" v-show="isAboutState" style="display: none">
 						<div class="about-image-wrapper">
 							<div class="about-bg-image"></div>
-							<h1 class="giant-text">OBSERVER</h1>
+<!-- 							<h1 class="giant-text">OBSERVER</h1> -->
 						</div>
 						<div class="about-footer">
+						<div class="about-footer-left">
 							<div class="about-name">RANSFORD LARBI</div>
-							<div class="about-location">GHANA. WORKING WORLDWIDE</div>
+							<p class="about-description mb-20">
+								A developer with relentless work ethic and a passion for turning ideas into reality. I don't just write code, I bring people's dreams to life through thoughtful design and precise engineering.
+							</p>
+						</div>
+
+						<div class="about-location">GHANA. WORKING WORLDWIDE</div>
+
 						</div>
 					</div>
 				</div>
@@ -253,7 +260,7 @@
 				>
 					<div class="contact-titles text-left">
 						<h2
-							class="text-4xl mb-3 text-white tracking-tight font-medium"
+							class="text-2xl md:text-4xl mb-3 text-white tracking-tight font-medium"
 							style="font-family: &quot;Playfair Display&quot;, serif"
 						>
 							Let's Talk
@@ -276,7 +283,7 @@
 				<!-- Middle Section: Contact Details Grid -->
 				<div class="w-full h-full flex items-center justify-center">
 					<div
-						class="my-auto contact-links grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-4 mt-2"
+						class="my-auto contact-links grid grid-cols-1 md:grid-cols-2 gap-y-6 md:gap-y-16 gap-x-4 mt-2"
 					>
 						<a
 							href="mailto:contact@observer.com"
