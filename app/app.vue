@@ -433,10 +433,10 @@ const clients = [
 	{
 		name: "EGdata",
 		category: "Cloud Platform",
-		bg: "",
+		bg: "/EG-Data.png",
 		vid: "",
 		title: "Ebbysgold Group Datapoint",
-		year: "2026",
+		year: "2022",
 		challenge:
 			"Develop a secure, centralized cloud datapoint system for the Ebbysgold Group to streamline enterprise analytics and operations.",
 		services: ["Cloud Infrastructure", "Frontend Architecture", "UI/UX Design"],
@@ -446,8 +446,8 @@ const clients = [
 	{
 		name: "EG Dashboard",
 		category: "Admin Dashboard",
-		bg: "",
-		vid: "",
+		bg: "/Dashboard-EGTravels.png",
+		vid: "/dashboardEG.mp4",
 		title: "Ebbysgold Travels Admin Dashboard",
 		year: "2026",
 		challenge:
@@ -459,10 +459,10 @@ const clients = [
 	{
 		name: "Ebbysgold Travels",
 		category: "Web App",
-		bg: "/project_app2.png",
-		vid: "",
+		bg: "/egTravels.png",
+		vid: "/egTravels.mp4",
 		title: "Ebbysgold Travels and Tour",
-		year: "2026",
+		year: "2025",
 		challenge:
 			"Design a comprehensive and seamless travel booking experience that combines flight, hotel, and tour reservations into a unified, elegant platform.",
 		services: ["UI/UX Design", "Web Development", "Brand Strategy"],
@@ -482,45 +482,6 @@ const clients = [
 		role:
 			"Led the interface design, transforming complex data tables into scannable, intuitive visual metrics.",
 	},
-	{
-		name: "BlackVillage",
-		category: "Branding",
-		bg: "/appproj2.png",
-		vid: "/appproj2.mp4",
-		title: "BlackVillage Cultural Hub",
-		year: "2023",
-		challenge:
-			"Develop a cohesive brand identity that honors heritage while projecting a modern, forward-thinking aesthetic.",
-		services: ["Art Direction", "Brand Identity", "Typography"],
-		role:
-			"Created the primary logo, color palette, and digital brand guidelines from the ground up.",
-	},
-	{
-		name: "Agami Dash",
-		category: "Dashboard",
-		bg: "/project_app2.png",
-		vid: "",
-		title: "Agami Analytics Dashboard",
-		year: "2025",
-		challenge:
-			"Build a modular, customizable analytics dashboard for enterprise clients to visualize their growth.",
-		services: ["UI Design", "Data Viz", "Component Library"],
-		role:
-			"Architected a flexible grid system and designed a suite of interactive charts and widgets.",
-	},
-	{
-		name: "Agami Brand",
-		category: "Identity",
-		bg: "/project_app4.png",
-		vid: "",
-		title: "Agami Rebrand",
-		year: "2025",
-		challenge:
-			"Refresh the legacy brand to align with their new pivot towards enterprise B2B software solutions.",
-		services: ["Visual Strategy", "Logo Design", "Guidelines"],
-		role:
-			"Refined the brand mark and established a new, authoritative visual language for all corporate materials.",
-	},
 ];
 
 const carouselRef = ref(null);
@@ -530,42 +491,50 @@ const activeClient = computed(
 	() => clients[activeClientIndex.value] || clients[0],
 );
 
+let isCarouselScrolling = false;
 const onCarouselScroll = () => {
-	if (
-		!carouselRef.value ||
-		!carouselItems.value ||
-		carouselItems.value.length === 0
-	)
-		return;
+	if (isCarouselScrolling) return;
+	isCarouselScrolling = true;
 
-	const container = carouselRef.value;
-	const containerCenter = container.scrollLeft + container.offsetWidth / 2;
+	window.requestAnimationFrame(() => {
+		if (
+			!carouselRef.value ||
+			!carouselItems.value ||
+			carouselItems.value.length === 0
+		) {
+			isCarouselScrolling = false;
+			return;
+		}
 
-	let closestIndex = 0;
+		const container = carouselRef.value;
+		const containerCenter = container.scrollLeft + container.offsetWidth / 2;
 
-	// Edge case bounds: if scrolled to the absolute start or end, force selection of the first/last item
-	// This prevents the center-calculation from incorrectly highlighting the second/second-to-last item
-	if (container.scrollLeft <= 5) {
-		closestIndex = 0;
-	} else if (Math.ceil(container.scrollLeft + container.offsetWidth) >= container.scrollWidth - 5) {
-		closestIndex = carouselItems.value.length - 1;
-	} else {
-		let minDistance = Infinity;
-		carouselItems.value.forEach((item, index) => {
-			if (item) {
-				const itemCenter = item.offsetLeft + item.offsetWidth / 2;
-				const distance = Math.abs(itemCenter - containerCenter);
-				if (distance < minDistance) {
-					minDistance = distance;
-					closestIndex = index;
+		let closestIndex = 0;
+
+		if (container.scrollLeft <= 5) {
+			closestIndex = 0;
+		} else if (Math.ceil(container.scrollLeft + container.offsetWidth) >= container.scrollWidth - 5) {
+			closestIndex = carouselItems.value.length - 1;
+		} else {
+			let minDistance = Infinity;
+			carouselItems.value.forEach((item, index) => {
+				if (item) {
+					const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+					const distance = Math.abs(itemCenter - containerCenter);
+					if (distance < minDistance) {
+						minDistance = distance;
+						closestIndex = index;
+					}
 				}
-			}
-		});
-	}
+			});
+		}
 
-	if (activeClientIndex.value !== closestIndex) {
-		activeClientIndex.value = closestIndex;
-	}
+		if (activeClientIndex.value !== closestIndex) {
+			activeClientIndex.value = closestIndex;
+		}
+
+		isCarouselScrolling = false;
+	});
 };
 
 const logoRef = ref(null);
@@ -608,46 +577,53 @@ onMounted(() => {
 			gsap.set(cursorDot.value, { xPercent: -50, yPercent: -50 });
 			gsap.set(cursorOutline.value, { xPercent: -50, yPercent: -50 });
 
+			let isMouseTicking = false;
 			window.addEventListener("mousemove", (e) => {
-				const posX = e.clientX;
-				const posY = e.clientY;
+				if (isMouseTicking) return;
+				isMouseTicking = true;
 
-				gsap.set(cursorDot.value, { x: posX, y: posY });
-				gsap.to(cursorOutline.value, {
-					x: posX,
-					y: posY,
-					duration: 0.15,
-					ease: "power2.out",
-				});
+				window.requestAnimationFrame(() => {
+					const posX = e.clientX;
+					const posY = e.clientY;
 
-				const target = e.target;
-				const isClickable = target.closest(
-					"a, button, .cursor-pointer, .hover-3d, .nav-link, .carousel-item",
-				);
-				isHovering.value = !!isClickable;
-
-				// Logo letter proximity detection
-				const onLogo = target.closest(".logo");
-				isOnLogo.value = !!onLogo;
-
-				if (onLogo && letterRefs.value.length) {
-					letterRefs.value.forEach((el, i) => {
-						if (!el) return;
-						const rect = el.getBoundingClientRect();
-						const letterCenterX = rect.left + rect.width / 2;
-						const letterCenterY = rect.top + rect.height / 2;
-						const dist = Math.sqrt(
-							Math.pow(posX - letterCenterX, 2) + Math.pow(posY - letterCenterY, 2),
-						);
-						revealedLetters[i] = dist < CURSOR_RADIUS;
+					gsap.set(cursorDot.value, { x: posX, y: posY });
+					gsap.to(cursorOutline.value, {
+						x: posX,
+						y: posY,
+						duration: 0.15,
+						ease: "power2.out",
 					});
-				} else {
-					// Reset all letters when not on logo
-					for (let i = 0; i < revealedLetters.length; i++) {
-						revealedLetters[i] = false;
+
+					const target = e.target;
+					const isClickable = target.closest(
+						"a, button, .cursor-pointer, .hover-3d, .nav-link, .carousel-item",
+					);
+					isHovering.value = !!isClickable;
+
+					// Logo letter proximity detection
+					const onLogo = target.closest(".logo");
+					isOnLogo.value = !!onLogo;
+
+					if (onLogo && letterRefs.value.length) {
+						letterRefs.value.forEach((el, i) => {
+							if (!el) return;
+							const rect = el.getBoundingClientRect();
+							const letterCenterX = rect.left + rect.width / 2;
+							const letterCenterY = rect.top + rect.height / 2;
+							const dist = Math.sqrt(
+								Math.pow(posX - letterCenterX, 2) + Math.pow(posY - letterCenterY, 2),
+							);
+							revealedLetters[i] = dist < CURSOR_RADIUS;
+						});
+					} else {
+						// Reset all letters when not on logo
+						for (let i = 0; i < revealedLetters.length; i++) {
+							revealedLetters[i] = false;
+						}
 					}
-				}
-			});
+					isMouseTicking = false;
+				});
+			}, { passive: true });
 		});
 	}
 });
@@ -674,23 +650,34 @@ const onMouseUp = () => {
 	isDragging.value = false;
 };
 
+let isDragTicking = false;
+let currentDragX = 0;
+
 const onMouseMove = (e) => {
 	if (!isDragging.value) return;
 	e.preventDefault();
-	const x = e.pageX - carouselRef.value.offsetLeft;
-	const walk = (x - startX.value) * 2; // Scroll speed multiplier
-	if (Math.abs(walk) > 5) {
-		hasDragged.value = true;
-		if (!hasEverDragged.value) {
-			hasEverDragged.value = true;
-			gsap.to(".floating-drag-hint", {
-				opacity: 0,
-				duration: 0.25,
-				ease: "power2.out",
-			});
+	currentDragX = e.pageX;
+
+	if (isDragTicking) return;
+	isDragTicking = true;
+
+	window.requestAnimationFrame(() => {
+		const x = currentDragX - carouselRef.value.offsetLeft;
+		const walk = (x - startX.value) * 2; // Scroll speed multiplier
+		if (Math.abs(walk) > 5) {
+			hasDragged.value = true;
+			if (!hasEverDragged.value) {
+				hasEverDragged.value = true;
+				gsap.to(".floating-drag-hint", {
+					opacity: 0,
+					duration: 0.25,
+					ease: "power2.out",
+				});
+			}
 		}
-	}
-	carouselRef.value.scrollLeft = scrollLeft.value - walk;
+		carouselRef.value.scrollLeft = scrollLeft.value - walk;
+		isDragTicking = false;
+	});
 };
 
 const handleWorkClick = (index, e) => {
@@ -723,6 +710,7 @@ const isContactState = ref(false);
 const hasPerspective = ref(false);
 
 const wasWorkStateBeforeContact = ref(false);
+let cardTransitionTimeout = null;
 
 const toggleContact = () => {
 	isContactState.value = !isContactState.value;
@@ -788,6 +776,17 @@ const transitionState = async (targetState) => {
 	// Record if we were coming from About state
 	const wasAbout = isAboutState.value;
 
+	// Measure card before state change to support smooth height/width transitions (e.g. to/from 'auto')
+	const card = document.querySelector(".content-card");
+	let startWidth = 0;
+	let startHeight = 0;
+	if (card) {
+		startWidth = card.offsetWidth;
+		startHeight = card.offsetHeight;
+		// Disable transition ONLY for width and height so other properties (e.g. transform) still transition normally
+		card.style.transitionProperty = "transform, background, border, border-radius, padding, box-shadow, backdrop-filter, -webkit-backdrop-filter, margin";
+	}
+
 	// Toggle states - CSS transitions will instantly begin smoothly scaling the card
 	isWorkState.value = targetState === "work";
 	isAboutState.value = targetState === "about";
@@ -799,6 +798,40 @@ const transitionState = async (targetState) => {
 
 	// Wait for Vue to apply classes and v-show
 	await nextTick();
+
+	// Animate card size change smoothly using concrete px values
+	if (card) {
+		const endWidth = card.offsetWidth;
+		const endHeight = card.offsetHeight;
+
+		// Disable max-width and max-height during the transition to prevent clamping by stylesheet limits
+		card.style.maxWidth = "none";
+		card.style.maxHeight = "none";
+
+		// Set back to starting dimensions inline
+		card.style.width = startWidth + "px";
+		card.style.height = startHeight + "px";
+
+		// Force reflow
+		card.offsetHeight;
+
+		// Restore CSS transitions for all properties
+		card.style.transitionProperty = "";
+
+		// Set inline target dimensions to trigger CSS transitions
+		card.style.width = endWidth + "px";
+		card.style.height = endHeight + "px";
+
+		// Clear inline dimensions after transition finishes (0.8s) so responsiveness is restored
+		if (cardTransitionTimeout) clearTimeout(cardTransitionTimeout);
+		cardTransitionTimeout = setTimeout(() => {
+			card.style.width = "";
+			card.style.height = "";
+			card.style.maxWidth = "";
+			card.style.maxHeight = "";
+			cardTransitionTimeout = null;
+		}, 800);
+	}
 
 	let inTarget = ".home-content";
 	if (isWorkState.value) {
