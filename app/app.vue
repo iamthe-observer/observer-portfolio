@@ -54,6 +54,7 @@
 		</button>
 
 		<main class="content-card" :class="{ 'is-contact': isContactState }">
+			<div class="content-card-bg"></div>
 			<!-- Floating Contact Close Button -->
 			<Transition name="fade-delay">
 				<button
@@ -94,7 +95,6 @@
 							v-for="(letter, i) in logoLetters"
 							:key="i"
 							class="logo-letter"
-							:class="{ revealed: revealedLetters[i] }"
 							ref="letterRefs"
 						>
 							<span class="letter-default">{{ letter.from }}</span>
@@ -113,14 +113,22 @@
 				<div class="card-body">
 					<!-- Home State Content -->
 					<div class="home-content" v-show="!isWorkState && !isAboutState">
-						<h1 class="main-heading">Branding, digital design<br class="hidden md:block" />& development</h1>
+						<h1 class="main-heading">Full-Stack Web<br class="hidden md:block" />Development & <br/> UI/UX Design</h1>
 						<p class="description">
-							For small to medium businesses, startups,
-							and fellow professionals striving for growth
-							and new opportunities
+							Building robust, scalable applications and seamless digital experiences from server to browser.
 						</p>
-						<div class="action-buttons">
-							<button class="portfolio-btn">PORTFOLIO</button>
+						<div class="action-buttons items-end">
+							<button class="portfolio-btn" @click.prevent="toggleWork">PORTFOLIO</button>
+							<div class="flex flex-wrap gap-1.5 justify-end text-right max-w-[200px] md:max-w-[320px]">
+								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">Vue / Nuxt</span>
+								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">React</span>
+								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">React Native</span>
+								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">Capacitor</span>
+								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">Python</span>
+								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">Node.js</span>
+								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">TypeScript</span>
+								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">PostgreSQL</span>
+							</div>
 						</div>
 					</div>
 
@@ -246,7 +254,13 @@
 							</p>
 						</div>
 
-						<div class="about-location">GHANA. WORKING WORLDWIDE</div>
+						<div class="about-location flex items-center gap-2">
+							GHANA 🇬🇭, WORKING WORLDWIDE
+							<div class="relative flex h-2.5 w-2.5">
+								<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+								<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+							</div>
+						</div>
 
 						</div>
 					</div>

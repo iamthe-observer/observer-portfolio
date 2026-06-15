@@ -161,9 +161,7 @@ html {
 	width: 90%;
 	max-width: 600px;
 	height: 380px;
-	background: rgba(20, 20, 20, 0.45);
-	backdrop-filter: blur(15px);
-	-webkit-backdrop-filter: blur(15px);
+	background: transparent;
 	border: 1px solid rgba(255, 255, 255, 0.08);
 	border-radius: 8px;
 	padding: 25px 30px;
@@ -176,12 +174,27 @@ html {
 	transition: all 0.8s cubic-bezier(0.68, -0.25, 0.265, 1.25);
 }
 
+.content-card-bg {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: rgba(20, 20, 20, 0.45);
+	backdrop-filter: blur(15px);
+	-webkit-backdrop-filter: blur(15px);
+	z-index: 0;
+	pointer-events: none;
+	overflow: hidden;
+	transition: background 0.8s cubic-bezier(0.68, -0.25, 0.265, 1.25), backdrop-filter 0.8s cubic-bezier(0.68, -0.25, 0.265, 1.25), opacity 0.8s cubic-bezier(0.68, -0.25, 0.265, 1.25);
+}
+
 .content-card.is-contact {
 	transform: translateY(0) rotateY(180deg);
 	height: 420px !important;
 }
 
 .card-front-content {
+	position: relative;
+	z-index: 1;
 	display: flex;
 	flex-direction: column;
 	flex: 1;
@@ -198,6 +211,7 @@ html {
 
 .card-back-content {
 	position: absolute;
+	z-index: 1;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -242,6 +256,17 @@ html {
 	transform: translateY(calc(50vh - 50% - 15px)) rotateY(0deg);
 }
 
+.page-container.work-state .content-card-bg {
+	background: rgba(20, 20, 20, 0.85);
+}
+
+.work-info-panel h2,
+.work-info-panel h3,
+.work-info-panel p,
+.work-info-panel span {
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
 .page-container.work-state .content-card.is-contact {
 	transform: translateY(calc(50vh - 180px)) rotateY(180deg);
 }
@@ -256,14 +281,18 @@ html {
 	max-width: 75vw;
 	width: 75vw;
 	height: 90vh;
-	background: rgba(20, 20, 20, 0.35);
-	backdrop-filter: blur(25px);
-	-webkit-backdrop-filter: blur(25px);
+	background: transparent;
 	border-radius: 16px;
 	border: 2px solid rgba(255, 255, 255, 0.15);
 	box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
 	padding: 0;
 	overflow: hidden;
+}
+
+.page-container.about-state .content-card-bg {
+	background: rgba(20, 20, 20, 0.35);
+	backdrop-filter: blur(25px);
+	-webkit-backdrop-filter: blur(25px);
 }
 
 .card-header {
@@ -302,15 +331,24 @@ html {
 	transform: translateY(4px);
 }
 
-.logo-letter.revealed .letter-default {
+.logo:hover .logo-letter .letter-default {
 	opacity: 0;
 	transform: translateY(-4px);
 }
 
-.logo-letter.revealed .letter-alt {
+.logo:hover .logo-letter .letter-alt {
 	opacity: 1;
 	transform: translateY(0);
 }
+
+.logo-letter:nth-child(1) .letter-default, .logo-letter:nth-child(1) .letter-alt { transition-delay: 0.0s; }
+.logo-letter:nth-child(2) .letter-default, .logo-letter:nth-child(2) .letter-alt { transition-delay: 0.05s; }
+.logo-letter:nth-child(3) .letter-default, .logo-letter:nth-child(3) .letter-alt { transition-delay: 0.10s; }
+.logo-letter:nth-child(4) .letter-default, .logo-letter:nth-child(4) .letter-alt { transition-delay: 0.15s; }
+.logo-letter:nth-child(5) .letter-default, .logo-letter:nth-child(5) .letter-alt { transition-delay: 0.20s; }
+.logo-letter:nth-child(6) .letter-default, .logo-letter:nth-child(6) .letter-alt { transition-delay: 0.25s; }
+.logo-letter:nth-child(7) .letter-default, .logo-letter:nth-child(7) .letter-alt { transition-delay: 0.30s; }
+.logo-letter:nth-child(8) .letter-default, .logo-letter:nth-child(8) .letter-alt { transition-delay: 0.35s; }
 
 .nav-links {
 	display: flex;
