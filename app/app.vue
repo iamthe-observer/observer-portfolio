@@ -1,4 +1,6 @@
 <template>
+
+
 	<div
 		class="page-container select-none"
 		:class="{
@@ -7,19 +9,13 @@
 			'has-perspective': hasPerspective,
 		}"
 	>
-		<!-- Custom Cursor (deactivated — will be reactivated later) -->
-		<!-- <div
-			v-if="isDesktop"
-			class="custom-cursor-dot"
-			ref="cursorDot"
-			:class="{ hovering: isHovering && !isOnLogo }"
-		></div>
+		<!-- Premium Inverted Custom Cursor -->
 		<div
 			v-if="isDesktop"
-			class="custom-cursor-outline"
-			ref="cursorOutline"
-			:class="{ hovering: isHovering && !isOnLogo, 'on-logo': isOnLogo }"
-		></div> -->
+			class="custom-cursor"
+			ref="cursorRef"
+			:class="{ hovering: isHovering || isOnLogo }"
+		></div>
 
 		<Transition name="bg-fade">
 			<div
@@ -53,20 +49,19 @@
 			×
 		</button>
 
+		<!-- Floating Contact Close Button (Moved outside) -->
+		<Transition name="fade-delay">
+			<button
+				class="contact-close-btn-outside"
+				v-show="isContactButtonVisible"
+				@click.prevent="toggleContact"
+			>
+				×
+			</button>
+		</Transition>
+
 		<main class="content-card" :class="{ 'is-contact': isContactState }">
 			<div class="content-card-bg"></div>
-			<!-- Floating Contact Close Button -->
-			<Transition name="fade-delay">
-				<button
-					class="contact-close-btn"
-					v-show="isContactState"
-					@click.prevent="toggleContact"
-				>
-					×
-				</button>
-			</Transition>
-
-			<!-- Floating Drag Indicator -->
 			<div class="floating-drag-hint">
 				<svg
 					width="18"
@@ -85,32 +80,32 @@
 			</div>
 
 			<div class="card-front-content">
-				<header class="card-header" v-show="!isAboutState">
-					<div
-						class="logo cursor-pointer"
-						ref="logoRef"
-						@click.prevent="transitionState('home')"
-					>
-						<span
-							v-for="(letter, i) in logoLetters"
-							:key="i"
-							class="logo-letter"
-							ref="letterRefs"
-						>
-							<span class="letter-default">{{ letter.from }}</span>
-							<span class="letter-alt">{{ letter.to }}</span>
-						</span>
-					</div>
-					<nav class="nav-links">
-						<a href="#" class="nav-link" @click.prevent="toggleWork">WORK</a>
-						<a href="#" class="nav-link" @click.prevent="toggleAbout">ABOUT</a>
-					</nav>
-					<button class="contact-btn header-contact" @click.prevent="toggleContact">
-						CONTACT
-					</button>
-				</header>
+						<header class="card-header" v-show="!isAboutState">
+							<div
+								class="logo cursor-pointer"
+								ref="logoRef"
+								@click.prevent="transitionState('home')"
+							>
+								<span
+									v-for="(letter, i) in logoLetters"
+									:key="i"
+									class="logo-letter"
+									ref="letterRefs"
+								>
+									<span class="letter-default">{{ letter.from }}</span>
+									<span class="letter-alt">{{ letter.to }}</span>
+								</span>
+							</div>
+							<nav class="nav-links">
+								<a href="#" class="nav-link" @click.prevent="toggleWork">WORK</a>
+								<a href="#" class="nav-link" @click.prevent="toggleAbout">ABOUT</a>
+							</nav>
+							<button class="contact-btn header-contact" @click.prevent="toggleContact">
+								CONTACT
+							</button>
+						</header>
 
-				<div class="card-body">
+						<div class="card-body">
 					<!-- Home State Content -->
 					<div class="home-content" v-show="!isWorkState && !isAboutState">
 						<h1 class="main-heading">Full-Stack Web<br class="hidden md:block" />Development & <br/> UI/UX Design</h1>
@@ -118,16 +113,37 @@
 							Building robust, scalable applications and seamless digital experiences from server to browser.
 						</p>
 						<div class="action-buttons items-end">
-							<button class="portfolio-btn" @click.prevent="toggleWork">PORTFOLIO</button>
-							<div class="flex flex-wrap gap-1.5 justify-end text-right max-w-[200px] md:max-w-[320px]">
-								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">Vue / Nuxt</span>
-								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">React</span>
-								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">React Native</span>
-								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">Capacitor</span>
-								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">Python</span>
-								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">Node.js</span>
-								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">TypeScript</span>
-								<span class="px-2 py-1 rounded-[6px] border border-white/10 bg-white/5 text-[0.6rem] text-white/60 font-medium whitespace-nowrap tracking-wide">PostgreSQL</span>
+							<div class="marquee-slit relative w-full flex items-center py-2 px-1">
+								<div class="mask-fade-edges overflow-hidden w-full flex items-center">
+									<div class="flex gap-2 animate-marquee w-max">
+										<!-- Set 1 -->
+										<span class="skill-badge">Figma</span>
+										<span class="skill-badge">UI/UX</span>
+										<span class="skill-badge">Adobe CC</span>
+										<span class="skill-badge">WebGL</span>
+										<span class="skill-badge">Vue/Nuxt</span>
+										<span class="skill-badge">React</span>
+										<span class="skill-badge">React Native</span>
+										<span class="skill-badge">Capacitor</span>
+										<span class="skill-badge">Python</span>
+										<span class="skill-badge">Node.js</span>
+										<span class="skill-badge">TypeScript</span>
+										<span class="skill-badge">PostgreSQL</span>
+										<!-- Set 2 (Seamless loop) -->
+										<span class="skill-badge">Figma</span>
+										<span class="skill-badge">UI/UX</span>
+										<span class="skill-badge">Adobe CC</span>
+										<span class="skill-badge">WebGL</span>
+										<span class="skill-badge">Vue/Nuxt</span>
+										<span class="skill-badge">React</span>
+										<span class="skill-badge">React Native</span>
+										<span class="skill-badge">Capacitor</span>
+										<span class="skill-badge">Python</span>
+										<span class="skill-badge">Node.js</span>
+										<span class="skill-badge">TypeScript</span>
+										<span class="skill-badge">PostgreSQL</span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -135,67 +151,65 @@
 					<!-- Work State Content -->
 					<div class="work-content" v-show="isWorkState" style="display: none">
 						<!-- Dynamic Info Panel above the carousel -->
-						<Transition name="fade" mode="out-in">
-							<div
-								class="work-info-panel w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 text-left pt-0 pb-0 px-2"
-								:key="activeClientIndex"
-							>
-								<!-- Col 1: Title & Year (Span 4) -->
-								<div class="md:col-span-4 flex flex-col items-start pr-4 gap-4">
-									<h2
-										class="text-3xl md:text-[2.2rem] font-bold leading-[1.15] text-white/90 tracking-tight m-0"
-										style="font-family: &quot;Playfair Display&quot;, serif"
-									>
-										{{ activeClient.title }}
-									</h2>
-									<span
-										class="px-6 py-1.5 rounded-[20px] border border-white/20 text-[0.75rem] text-white/50 tracking-wide"
-										>{{ activeClient.year }}</span
-									>
-								</div>
-
-								<!-- Col 2: Challenge (Span 3) -->
-								<div class="md:col-span-3 flex flex-col pt-1">
-									<h3
-										class="text-[0.75rem] text-white/40 mb-2 md:mb-4 font-normal tracking-wide"
-									>
-										Challenge:
-									</h3>
-									<p class="text-[0.9rem] text-white/70 leading-[1.6] font-medium">
-										{{ activeClient.challenge }}
-									</p>
-								</div>
-
-								<!-- Col 3: Services (Span 2) -->
-								<div class="md:col-span-2 flex flex-col pt-1">
-									<h3
-										class="text-[0.75rem] text-white/40 mb-2 md:mb-4 font-normal tracking-wide"
-									>
-										Services:
-									</h3>
-									<div class="flex flex-wrap gap-2">
-										<span
-											v-for="service in activeClient.services"
-											:key="service"
-											class="px-3 py-1.5 rounded-[8px] border border-white/10 bg-white/5 text-[0.75rem] text-white/70 font-medium whitespace-nowrap"
-											>{{ service }}</span
-										>
-									</div>
-								</div>
-
-								<!-- Col 4: Role (Span 3) -->
-								<div class="md:col-span-3 flex flex-col pt-1">
-									<h3
-										class="text-[0.75rem] text-white/40 mb-2 md:mb-4 font-normal tracking-wide"
-									>
-										Role:
-									</h3>
-									<p class="text-[0.9rem] text-white/70 leading-[1.6] font-medium">
-										{{ activeClient.role }}
-									</p>
-								</div>
+						<div
+							class="work-info-panel w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 text-left pt-0 pb-0 px-2"
+						>
+							<!-- Col 1: Title & Year (Span 4) -->
+							<div class="md:col-span-4 flex flex-col items-start pr-4 gap-4">
+								<h2
+									class="text-3xl md:text-[2.2rem] font-bold leading-[1.15] text-white/90 tracking-tight m-0"
+									style="font-family: &quot;Playfair Display&quot;, serif"
+								>
+									{{ activeClient.title }}
+								</h2>
+								<span
+									class="px-6 py-1.5 rounded-[20px] border border-white/20 text-[0.75rem] text-white/50 tracking-wide"
+									>{{ activeClient.year }}</span
+								>
 							</div>
-						</Transition>
+
+							<!-- Col 2: Challenge (Span 3) -->
+							<div class="md:col-span-3 flex flex-col pt-1">
+								<h3
+									class="text-[0.75rem] text-white/40 mb-2 md:mb-4 font-normal tracking-wide"
+								>
+									Challenge:
+								</h3>
+								<p class="text-[0.9rem] text-white/70 leading-[1.6] font-medium">
+									{{ activeClient.challenge }}
+								</p>
+							</div>
+
+							<!-- Col 3: Services (Span 2) -->
+							<div class="md:col-span-2 flex flex-col pt-1">
+								<h3
+									class="text-[0.75rem] text-white/40 mb-2 md:mb-4 font-normal tracking-wide"
+								>
+									Services:
+								</h3>
+								<ul class="flex flex-col gap-2 m-0 p-0 list-none">
+									<li
+										v-for="service in activeClient.services"
+										:key="service"
+										class="text-[0.8rem] text-white/60 font-medium"
+									>
+										{{ service }}
+									</li>
+								</ul>
+							</div>
+
+							<!-- Col 4: Role (Span 3) -->
+							<div class="md:col-span-3 flex flex-col pt-1">
+								<h3
+									class="text-[0.75rem] text-white/40 mb-2 md:mb-4 font-normal tracking-wide"
+								>
+									Role:
+								</h3>
+								<p class="text-[0.9rem] text-white/70 leading-[1.6] font-medium">
+									{{ activeClient.role }}
+								</p>
+							</div>
+						</div>
 
 						<div
 							class="carousel carousel-center rounded-box select-none cursor-grab active:cursor-grabbing w-full mt-4"
@@ -562,6 +576,7 @@ const logoLetters = [
 	{ from: "V", to: "O" },
 	{ from: "E", to: "R" },
 	{ from: "R", to: "D" },
+	{ from: "_", to: "_" },
 ];
 const revealedLetters = reactive([
 	false,
@@ -575,21 +590,16 @@ const revealedLetters = reactive([
 ]);
 
 const isDesktop = ref(false);
-const cursorDot = ref(null);
-const cursorOutline = ref(null);
+const cursorRef = ref(null);
 const isHovering = ref(false);
 const isOnLogo = ref(false);
-
-// Cursor outline radius (half of the 72px on-logo width)
-const CURSOR_RADIUS = 36;
 
 onMounted(() => {
 	isDesktop.value = window.matchMedia("(pointer: fine)").matches;
 
 	if (isDesktop.value) {
 		nextTick(() => {
-			gsap.set(cursorDot.value, { xPercent: -50, yPercent: -50 });
-			gsap.set(cursorOutline.value, { xPercent: -50, yPercent: -50 });
+			gsap.set(cursorRef.value, { xPercent: -50, yPercent: -50 });
 
 			let isMouseTicking = false;
 			window.addEventListener("mousemove", (e) => {
@@ -600,8 +610,7 @@ onMounted(() => {
 					const posX = e.clientX;
 					const posY = e.clientY;
 
-					gsap.set(cursorDot.value, { x: posX, y: posY });
-					gsap.to(cursorOutline.value, {
+					gsap.to(cursorRef.value, {
 						x: posX,
 						y: posY,
 						duration: 0.15,
@@ -618,23 +627,6 @@ onMounted(() => {
 					const onLogo = target.closest(".logo");
 					isOnLogo.value = !!onLogo;
 
-					if (onLogo && letterRefs.value.length) {
-						letterRefs.value.forEach((el, i) => {
-							if (!el) return;
-							const rect = el.getBoundingClientRect();
-							const letterCenterX = rect.left + rect.width / 2;
-							const letterCenterY = rect.top + rect.height / 2;
-							const dist = Math.sqrt(
-								Math.pow(posX - letterCenterX, 2) + Math.pow(posY - letterCenterY, 2),
-							);
-							revealedLetters[i] = dist < CURSOR_RADIUS;
-						});
-					} else {
-						// Reset all letters when not on logo
-						for (let i = 0; i < revealedLetters.length; i++) {
-							revealedLetters[i] = false;
-						}
-					}
 					isMouseTicking = false;
 				});
 			}, { passive: true });
@@ -721,14 +713,60 @@ const handleWorkClick = (index, e) => {
 const isWorkState = ref(false);
 const isAboutState = ref(false);
 const isContactState = ref(false);
+const isContactButtonVisible = ref(false);
 const hasPerspective = ref(false);
 
 const wasWorkStateBeforeContact = ref(false);
 let cardTransitionTimeout = null;
 
-const toggleContact = () => {
-	isContactState.value = !isContactState.value;
+const toggleContact = async () => {
+	const card = document.querySelector(".content-card");
+	const startHeight = card.offsetHeight;
+	card.style.height = `${startHeight}px`;
+
 	if (isContactState.value) {
+		// Fade out the button first
+		isContactButtonVisible.value = false;
+
+		// Wait for button fade out to finish before flipping the card
+		setTimeout(async () => {
+			isContactState.value = false;
+
+			// Restore work state if it was active before contact
+			if (wasWorkStateBeforeContact.value) {
+				isWorkState.value = true;
+				wasWorkStateBeforeContact.value = false;
+				if (!hasEverDragged.value) {
+					gsap.to(".floating-drag-hint", {
+						opacity: 1,
+						duration: 0.5,
+						delay: 0.6,
+						ease: "power2.out",
+					});
+				}
+			}
+
+			// Keep perspective active until transition completes
+			clearTimeout(cardTransitionTimeout);
+			cardTransitionTimeout = setTimeout(() => {
+				if (!isWorkState.value && !isAboutState.value && !isContactState.value) {
+					hasPerspective.value = false;
+				}
+			}, 800);
+
+			await nextTick();
+			card.style.height = "";
+			const endHeight = card.offsetHeight;
+			card.style.height = `${startHeight}px`;
+			card.offsetHeight; // force reflow
+			card.style.height = `${endHeight}px`;
+			setTimeout(() => { card.style.height = ""; }, 850);
+		}, 200);
+	} else {
+		// Entering contact state
+		isContactState.value = true;
+		isContactButtonVisible.value = true;
+
 		// Fade out drag hint immediately to prevent floating artifacts during 3D spin
 		gsap.to(".floating-drag-hint", { opacity: 0, duration: 0.2 });
 
@@ -738,23 +776,14 @@ const toggleContact = () => {
 			isWorkState.value = false;
 		}
 		hasPerspective.value = true;
-	} else {
-		// Restore work state if it was active before contact
-		if (wasWorkStateBeforeContact.value) {
-			isWorkState.value = true;
-			wasWorkStateBeforeContact.value = false;
-			if (!hasEverDragged.value) {
-				gsap.to(".floating-drag-hint", {
-					opacity: 1,
-					duration: 0.5,
-					delay: 0.6,
-					ease: "power2.out",
-				});
-			}
-		}
-		setTimeout(() => {
-			if (!isContactState.value) hasPerspective.value = false;
-		}, 800);
+
+		await nextTick();
+		card.style.height = "";
+		const endHeight = card.offsetHeight;
+		card.style.height = `${startHeight}px`;
+		card.offsetHeight; // force reflow
+		card.style.height = `${endHeight}px`;
+		setTimeout(() => { card.style.height = ""; }, 850);
 	}
 };
 
