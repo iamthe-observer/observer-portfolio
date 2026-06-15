@@ -9,6 +9,13 @@
 			'has-perspective': hasPerspective,
 		}"
 	>
+		<!-- Minimalistic Loader -->
+		<Transition name="bg-fade">
+			<div v-if="isLoading" class="fixed inset-0 z-[100] bg-[#0a0a0c] flex items-center justify-center">
+				<div class="w-6 h-6 rounded-full border-2 border-white/10 border-t-white/80 animate-spin"></div>
+			</div>
+		</Transition>
+
 		<!-- Premium Inverted Custom Cursor -->
 		<div
 			v-if="isDesktop"
@@ -441,6 +448,8 @@
 import { ref, reactive, nextTick, onMounted, computed } from "vue";
 import gsap from "gsap";
 
+const isLoading = ref(true);
+
 useSeoMeta({
 	title: "Observer",
 	description:
@@ -455,6 +464,16 @@ useSeoMeta({
 		"Observer is a creative developer specialized in WebGL, highly interactive experiences, and premium web design.",
 	twitterImage: "/og-image.png",
 	twitterCard: "summary_large_image",
+});
+
+useHead({
+	link: [
+		{
+			rel: "icon",
+			type: "image/x-icon",
+			href: "/favicon.ico?v=" + new Date().getTime(),
+		},
+	],
 });
 
 const clients = [
@@ -595,6 +614,10 @@ const isHovering = ref(false);
 const isOnLogo = ref(false);
 
 onMounted(() => {
+	setTimeout(() => {
+		isLoading.value = false;
+	}, 800);
+
 	isDesktop.value = window.matchMedia("(pointer: fine)").matches;
 
 	if (isDesktop.value) {
