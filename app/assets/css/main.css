@@ -109,7 +109,7 @@ html {
 	left: 50%;
 	width: 110vw;
 	height: 110vh;
-	transform: translate(-50%, -50%) translateZ(0);
+	transform: translate(-50%, -50%);
 	background-image: url("~/assets/hero-bg.png");
 	background-size: cover;
 	background-position: center;
@@ -125,7 +125,7 @@ html {
 	left: 50%;
 	width: 110vw;
 	height: 110vh;
-	transform: translate(-50%, -50%) scale(1.1) translateZ(0);
+	transform: translate(-50%, -50%) scale(1.1);
 	object-fit: cover;
 	object-position: center;
 	filter: blur(25px) brightness(0.5);
@@ -171,8 +171,8 @@ html {
 	flex-direction: column;
 	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 	transform-style: preserve-3d;
-	will-change: transform, width, height, padding;
-	transform: translateY(0) rotateY(0deg) translateZ(0);
+	will-change: width, height, padding;
+	transform: translateY(0) rotateY(0deg);
 	transition: all 0.8s cubic-bezier(0.68, -0.25, 0.265, 1.25);
 }
 
@@ -678,7 +678,12 @@ html {
 	border-bottom-right-radius: 15px;
 	border-bottom: 2px solid #3f3f3f;
 	z-index: 1;
-	filter: grayscale(100%) contrast(1.1);
+}
+
+@media (min-width: 768px) {
+	.about-bg-image {
+		background-position: top center;
+	}
 }
 
 .giant-text {
